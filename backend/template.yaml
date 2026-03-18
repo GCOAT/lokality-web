@@ -1,0 +1,242 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Kore starter backend (HTTP API + Lambda + DynamoDB + S3)
+
+Parameters:
+  ClientName:
+    Type: String
+    Description: Client identifier (kebab-case)
+  StageName:
+    Type: String
+    Default: dev
+  AllowedOrigin:
+    Type: String
+    Description: Allowed CORS origin (GitHub Pages or custom domain)
+  AdminTokenParam:
+    Type: String
+    Description: SSM SecureString path for admin token (e.g., /kore/client/stage/admin-token)
+  ThrottleRateLimit:
+    Type: Number
+    Default: 10
+  ThrottleBurstLimit:
+    Type: Number
+    Default: 20
+  LogRetentionDays:
+    Type: Number
+    Default: 7
+  EnableDeletionProtection:
+    Type: String
+    Default: "false"
+    AllowedValues: ["true", "false"]
+  EnablePITR:
+    Type: String
+    Default: "false"
+    AllowedValues: ["true", "false"]
+  EnableSES:
+    Type: String
+    Default: "false"
+    AllowedValues: ["true", "false"]
+  SenderEmail:
+    Type: String
+    Default: ""
+  SiteName:
+    Type: String
+    Default: ""
+  ConfirmationSubject:
+    Type: String
+    Default: "Thanks for signing up!"
+
+Conditions:
+  IsDeletionProtection: !Equals [!Ref EnableDeletionProtection, "true"]
+  IsPITR: !Equals [!Ref EnablePITR, "true"]
+  IsSES: !Equals [!Ref EnableSES, "true"]
+
+Globals:
+  Function:
+    Runtime: python3.13
+    Architectures: [arm64]
+    Timeout: 10
+    MemorySize: 256
+    Environment:
+      Variables:
+        ALLOWED_ORIGIN: !Ref AllowedOrigin
+        ADMIN_TOKEN_PARAM: !Ref AdminTokenParam
+        STAGE: !Ref StageName
+    Tags:
+      Project: kore
+      Client: !Ref ClientName
+      Stage: !Ref StageName
+
+Resources:
+  KoreHttpApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      StageName: !Ref StageName
+      CorsConfiguration:
+        AllowOrigins:
+          - !Ref AllowedOrigin
+        AllowHeaders:
+          - content-type
+          - x-admin-token
+        AllowMethods:
+          - GET
+          - POST
+          - OPTIONS
+      DefaultRouteSettings:
+        ThrottlingRateLimit: !Ref ThrottleRateLimit
+        ThrottlingBurstLimit: !Ref ThrottleBurstLimit
+
+  LeadsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub ${ClientName}-${StageName}-leads
+      BillingMode: PAY_PER_REQUEST
+      DeletionProtectionEnabled: !If [IsDeletionProtection, true, false]
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: !If [IsPITR, true, false]
+      AttributeDefinitions:
+        - AttributeName: pk
+          AttributeType: S
+        - AttributeName: sk
+          AttributeType: S
+      KeySchema:
+        - AttributeName: pk
+          KeyType: HASH
+        - AttributeName: sk
+          KeyType: RANGE
+      TimeToLiveSpecification:
+        AttributeName: expiresAt
+        Enabled: true
+
+  ContentTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub ${ClientName}-${StageName}-content
+      BillingMode: PAY_PER_REQUEST
+      DeletionProtectionEnabled: !If [IsDeletionProtection, true, false]
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: !If [IsPITR, true, false]
+      AttributeDefinitions:
+        - AttributeName: pk
+          AttributeType: S
+        - AttributeName: sk
+          AttributeType: S
+      KeySchema:
+        - AttributeName: pk
+          KeyType: HASH
+        - AttributeName: sk
+          KeyType: RANGE
+
+  MediaBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub ${ClientName}-${StageName}-media-${AWS::AccountId}
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+
+  MediaBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref MediaBucket
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: DenyInsecureTransport
+            Effect: Deny
+            Principal: "*"
+            Action: "s3:*"
+            Resource:
+              - !GetAtt MediaBucket.Arn
+              - !Sub "${MediaBucket.Arn}/*"
+            Condition:
+              Bool:
+                aws:SecureTransport: "false"
+
+  ApiLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub /aws/lambda/${ClientName}-${StageName}-api
+      RetentionInDays: !Ref LogRetentionDays
+
+  KoreApiFunction:
+    Type: AWS::Serverless::Function
+    DependsOn: ApiLogGroup
+    Properties:
+      FunctionName: !Sub ${ClientName}-${StageName}-api
+      CodeUri: src/
+      Handler: app.lambda_handler
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref LeadsTable
+        - DynamoDBReadPolicy:
+            TableName: !Ref ContentTable
+        - S3WritePolicy:
+            BucketName: !Ref MediaBucket
+        - Statement:
+            - Effect: Allow
+              Action:
+                - ssm:GetParameter
+                - ssm:GetParameters
+              Resource: !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter${AdminTokenParam}"
+        - !If
+          - IsSES
+          - Statement:
+              - Effect: Allow
+                Action:
+                  - ses:SendEmail
+                Resource: "*"
+          - !Ref AWS::NoValue
+      Environment:
+        Variables:
+          LEADS_TABLE_NAME: !Ref LeadsTable
+          CONTENT_TABLE_NAME: !Ref ContentTable
+          MEDIA_BUCKET_NAME: !Ref MediaBucket
+          SENDER_EMAIL: !Ref SenderEmail
+          ENABLE_SES: !Ref EnableSES
+          SITE_NAME: !Ref SiteName
+          CONFIRMATION_SUBJECT: !Ref ConfirmationSubject
+          DYNAMODB_ENDPOINT_OVERRIDE: ""
+          ADMIN_TOKEN: ""
+      Events:
+        PostLeads:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref KoreHttpApi
+            Method: POST
+            Path: /leads
+        GetContent:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref KoreHttpApi
+            Method: GET
+            Path: /content/{page}
+        PostPresign:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref KoreHttpApi
+            Method: POST
+            Path: /media/presign
+        OptionsAny:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref KoreHttpApi
+            Method: OPTIONS
+            Path: /{proxy+}
+
+Outputs:
+  ApiBaseUrl:
+    Description: Base URL of the HTTP API (includes stage path)
+    Value: !Sub "https://${KoreHttpApi}.execute-api.${AWS::Region}.amazonaws.com/${StageName}"
+  LeadsTableName:
+    Value: !Ref LeadsTable
+  ContentTableName:
+    Value: !Ref ContentTable
+  MediaBucketName:
+    Value: !Ref MediaBucket
