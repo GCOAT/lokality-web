@@ -60,16 +60,33 @@
 
 .footer__inner {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
   gap: var(--spacing-md);
-  flex-wrap: wrap;
+  text-align: center;
+}
+
+/* ── About ── */
+.about__content {
+  max-width: 70ch;
+  display: grid;
+  gap: var(--spacing-md);
+  color: var(--color-text-light);
+  line-height: var(--line-height-loose);
+}
+
+/* ── Founders Grid ── */
+.founders-grid {
+  display: grid;
+  gap: var(--spacing-lg);
+  grid-template-columns: 1fr;
 }
 
 /* ── Responsive ── */
 @media (min-width: 480px) {
-  /* sm — Expansion point: adjust layout for large phones.
-     Example: increase container padding, adjust grid columns. */
+  .founders-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (min-width: 768px) {
@@ -77,14 +94,28 @@
   .hero {
     padding: var(--spacing-3xl) 0;
   }
+
+  .section {
+    padding: var(--spacing-2xl) 0;
+  }
+
+  .founders-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .footer__inner {
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: left;
+  }
 }
 
 @media (min-width: 1024px) {
-  /* lg — Expansion point: adjust layout for small desktops.
-     Example: widen container, multi-column layouts. */
+  .hero {
+    padding: clamp(var(--spacing-3xl), 10vw, 120px) 0;
+  }
 }
 
 @media (min-width: 1280px) {
-  /* xl — Expansion point: adjust layout for standard desktops.
-     Example: max-width container, optimize whitespace. */
+  /* xl — standard desktops */
 }

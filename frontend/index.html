@@ -4,17 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Home — Kore Starter</title>
-  <meta name="description" content="Static-first websites with optional serverless features. Vanilla HTML/CSS/JS starter template.">
-  <link rel="canonical" href="https://example.com/">
+  <title>Lokality — Explore the Culture, History &amp; Stories of the Places That Matter</title>
+  <meta name="description" content="Lokality is a location-based digital archive and interactive tour guide. Explore destinations through curated tours, historical archives, and multimedia storytelling. Based in St. Croix, USVI.">
+  <link rel="canonical" href="https://amalikrigger.github.io/lokality-web/">
 
   <link rel="icon" href="assets/images/icons/favicon.svg" type="image/svg+xml">
 
-  <meta property="og:title" content="Home — Kore Starter">
-  <meta property="og:description" content="Static-first websites with optional serverless features.">
-  <meta property="og:image" content="https://example.com/assets/images/og-image.jpg">
-  <!-- TODO: Replace with real OG image (1200x630px recommended) -->
-  <meta property="og:url" content="https://example.com/">
+  <meta property="og:title" content="Lokality — Explore the Culture, History &amp; Stories of the Places That Matter">
+  <meta property="og:description" content="A location-based digital archive and interactive tour guide. Curated tours, historical archives, and multimedia storytelling.">
+  <meta property="og:image" content="https://amalikrigger.github.io/lokality-web/assets/images/og-image.jpg">
+  <meta property="og:url" content="https://amalikrigger.github.io/lokality-web/">
   <meta property="og:type" content="website">
 
   <meta http-equiv="Content-Security-Policy"
@@ -29,52 +28,89 @@
 
   <header class="site-header" role="banner">
     <div class="container header__inner">
-      <a class="brand" href="./index.html">Kore Starter</a>
+      <a class="brand" href="./index.html">Lokality</a>
       <nav class="nav" aria-label="Primary navigation">
-        <a class="nav__link" href="#features">Features</a>
-        <a class="nav__link" href="#contact">Contact</a>
+        <button class="nav__toggle js-nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="Open menu">
+          <span class="nav__toggle-bar"></span>
+          <span class="nav__toggle-bar"></span>
+          <span class="nav__toggle-bar"></span>
+        </button>
+        <div class="nav__menu" id="nav-menu">
+          <a class="nav__link" href="#about">About</a>
+          <a class="nav__link" href="#founders">Founders</a>
+          <a class="nav__link" href="#signup">Sign Up</a>
+        </div>
       </nav>
     </div>
   </header>
 
   <main id="main-content" class="site-main">
+
+    <!-- ── Hero ── -->
     <section class="hero">
       <div class="container hero__inner">
-        <h1 class="hero__title">Static-first websites with optional serverless features.</h1>
-        <p class="hero__subtitle">Vanilla HTML/CSS/JS starter that plugs into Kore's API.</p>
+        <h1 class="hero__title">Explore the Culture, History &amp; Stories of the Places That Matter</h1>
+        <p class="hero__subtitle">Lokality is a location-based digital archive and interactive tour guide — preserving and sharing the cultural heritage of destinations through curated tours, multimedia storytelling, and gamified learning. Starting in St. Croix, USVI.</p>
         <div class="hero__actions">
-          <a class="btn btn--primary" href="#contact">Contact</a>
-          <a class="btn btn--secondary" href="#features">See Features</a>
+          <a class="btn btn--primary" href="#signup">Join the Beta</a>
+          <a class="btn btn--secondary" href="#about">Learn More</a>
         </div>
       </div>
     </section>
 
-    <section id="features" class="section">
+    <!-- ── About ── -->
+    <section id="about" class="section">
       <div class="container">
-        <h2 class="section__title">Features</h2>
-        <div class="grid">
-          <article class="card">
-            <h3 class="card__title">Fast</h3>
-            <p class="card__body">Static-first for performance and reliability.</p>
+        <h2 class="section__title">What is Lokality?</h2>
+        <div class="about__content">
+          <p>Every place has stories worth preserving. Lokality is a platform that connects people to the rich cultural heritage, history, and hidden narratives of the destinations they visit — or call home.</p>
+          <p>Using your phone as a guide, Lokality combines real-world navigation with curated multimedia tours, historical archives, and educational content. Walk through neighborhoods and discover the stories behind every landmark, street corner, and community space.</p>
+          <p>We started in St. Croix, US Virgin Islands — an island with centuries of history, vibrant culture, and stories that deserve to be told. Lokality is our way of making sure those stories reach the people who need to hear them.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Founders ── -->
+    <section id="founders" class="section section--alt">
+      <div class="container">
+        <h2 class="section__title">Meet the Founders</h2>
+        <p class="section__subtitle">The team behind Lokality — building at the intersection of culture, technology, and storytelling.</p>
+        <div class="founders-grid">
+          <article class="founder-card">
+            <div class="founder-card__photo-wrap">
+              <div class="founder-card__placeholder" aria-hidden="true">TD</div>
+            </div>
+            <h3 class="founder-card__name">Torhera Durand</h3>
+            <p class="founder-card__role">Founder</p>
+            <p class="founder-card__bio">Passionate about preserving Caribbean heritage and making cultural history accessible through technology.</p>
           </article>
-          <article class="card">
-            <h3 class="card__title">Secure</h3>
-            <p class="card__body">Tier 1 baseline: throttling, CORS, admin token.</p>
+          <article class="founder-card">
+            <div class="founder-card__photo-wrap">
+              <div class="founder-card__placeholder" aria-hidden="true">AK</div>
+            </div>
+            <h3 class="founder-card__name">Amali Krigger</h3>
+            <p class="founder-card__role">Co-Founder</p>
+            <p class="founder-card__bio">Software engineer focused on building tools that connect people with the places and stories that shape communities.</p>
           </article>
-          <article class="card">
-            <h3 class="card__title">Extensible</h3>
-            <p class="card__body">Leads, content, and media upload APIs.</p>
+          <article class="founder-card">
+            <div class="founder-card__photo-wrap">
+              <div class="founder-card__placeholder" aria-hidden="true">ID</div>
+            </div>
+            <h3 class="founder-card__name">Israel Dennie</h3>
+            <p class="founder-card__role">Co-Founder</p>
+            <p class="founder-card__bio">Committed to using design and storytelling to create immersive experiences that celebrate local culture.</p>
           </article>
         </div>
       </div>
     </section>
 
-    <section id="contact" class="section section--alt">
+    <!-- ── Sign Up / Newsletter ── -->
+    <section id="signup" class="section">
       <div class="container">
-        <h2 class="section__title">Contact</h2>
-        <p class="section__subtitle">Submits to <code>POST /leads</code> if configured.</p>
+        <h2 class="section__title">Stay in the Loop</h2>
+        <p class="section__subtitle">Sign up for updates on Lokality's beta launch, new features, and early access.</p>
 
-        <form id="contact-form" class="form" novalidate>
+        <form id="signup-form" class="form" novalidate>
           <div class="hp" aria-hidden="true">
             <label for="website">Website</label>
             <input id="website" name="website" type="text" autocomplete="off" tabindex="-1">
@@ -94,31 +130,35 @@
             <span id="email-error" class="form-error" role="alert" hidden></span>
           </div>
 
-          <div class="form-group">
-            <label class="label" for="message">Message</label>
-            <textarea class="textarea" id="message" name="message" rows="5"
-                      aria-describedby="message-error"></textarea>
-            <span id="message-error" class="form-error" role="alert" hidden></span>
-          </div>
-
-          <button class="btn btn--primary" type="submit">Send Message</button>
+          <button class="btn btn--primary" type="submit">Sign Up</button>
           <div id="form-status" class="form-status" role="status" hidden></div>
         </form>
       </div>
     </section>
+
   </main>
 
   <footer class="site-footer" role="contentinfo">
     <div class="container footer__inner">
-      <p class="muted">&copy; <span id="year"></span> Kore Starter</p>
-      <a class="muted" href="#main-content">Back to top</a>
+      <div class="footer__brand">
+        <p class="footer__name">Lokality</p>
+        <p class="muted footer__tagline">Preserving the stories of the places that matter.</p>
+      </div>
+      <div class="footer__contact">
+        <a class="footer__link" href="mailto:info@lokality.co">info@lokality.co</a>
+      </div>
+      <div class="footer__social">
+        <a class="footer__link" href="#" target="_blank" rel="noopener noreferrer" aria-label="Lokality on Instagram">Instagram</a>
+        <a class="footer__link" href="#" target="_blank" rel="noopener noreferrer" aria-label="Lokality on Facebook">Facebook</a>
+      </div>
+      <p class="muted footer__copy">&copy; <span id="year"></span> Lokality. All rights reserved.</p>
     </div>
   </footer>
 
   <div id="status-announcer" aria-live="polite" aria-atomic="true" class="sr-only"></div>
 
   <noscript>
-    <p>This site works best with JavaScript enabled for dynamic features like form submissions.</p>
+    <p>This site works best with JavaScript enabled for features like newsletter signup.</p>
   </noscript>
 
   <script src="assets/js/config.js"></script>
