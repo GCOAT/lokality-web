@@ -5,6 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Page Not Found — Lokality</title>
   <meta name="description" content="The page you are looking for does not exist.">
+
+  <link rel="icon" href="assets/images/icons/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/images/logos/lokality_launcher.png">
+
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://*.execute-api.*.amazonaws.com;">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <script src="assets/js/init.js"></script>
   <link rel="stylesheet" href="assets/css/base.css">
   <link rel="stylesheet" href="assets/css/layout.css">
   <link rel="stylesheet" href="assets/css/components.css">
@@ -12,32 +24,60 @@
 <body>
   <a href="#main-content" class="skip-link">Skip to main content</a>
 
+  <div class="gradient-bar" role="presentation"></div>
+
   <header class="site-header" role="banner">
     <div class="container header__inner">
-      <a class="brand" href="./index.html">Lokality</a>
+      <a class="brand" href="./index.html">
+        <img class="brand__icon" src="assets/images/logos/lokality_icon.png" alt="" width="36" height="36">
+        <span class="brand__text">Lokality</span>
+      </a>
       <nav class="nav" aria-label="Primary navigation">
         <div class="nav__menu">
+          <a class="nav__link" href="./index.html#features">Features</a>
           <a class="nav__link" href="./index.html#about">About</a>
           <a class="nav__link" href="./index.html#founders">Founders</a>
-          <a class="nav__link" href="./index.html#signup">Sign Up</a>
+          <a class="nav__link" href="./index.html#download">Get the App</a>
         </div>
       </nav>
     </div>
   </header>
 
   <main id="main-content" class="site-main">
-    <section class="section">
+    <section class="section" style="text-align: center; padding: var(--spacing-5xl) 0;">
       <div class="container">
+        <p style="font-size: 4rem; margin-bottom: var(--spacing-md);" aria-hidden="true">&#129695;</p>
         <h1 class="section__title">Page Not Found</h1>
-        <p>Sorry, the page you are looking for doesn't exist or has been moved.</p>
-        <p><a class="btn btn--primary" href="./index.html">Go to Homepage</a></p>
+        <p class="section__subtitle" style="margin-bottom: var(--spacing-xl);">Sorry, the page you are looking for doesn&rsquo;t exist or has been moved.</p>
+        <a class="btn btn--primary" href="./index.html">Go to Homepage</a>
       </div>
     </section>
   </main>
 
   <footer class="site-footer" role="contentinfo">
     <div class="container footer__inner">
-      <p class="muted">&copy; <span id="year"></span> Lokality. All rights reserved.</p>
+      <div class="footer__top">
+        <div class="footer__brand">
+          <a class="footer__brand-link" href="./index.html">
+            <img class="footer__brand-icon" src="assets/images/logos/lokality_icon.png" alt="" width="32" height="32">
+            <span class="footer__brand-name">Lokality</span>
+          </a>
+          <p class="footer__tagline">Preserving the stories of the places that matter.</p>
+        </div>
+
+        <nav aria-label="Legal">
+          <p class="footer__nav-heading">Legal</p>
+          <ul class="footer__nav-list">
+            <li><a class="footer__link" href="privacy.html">Privacy Policy</a></li>
+            <li><a class="footer__link" href="terms.html">Terms &amp; Conditions</a></li>
+            <li><a class="footer__link" href="mailto:info@lokality.co">Contact</a></li>
+          </ul>
+        </nav>
+      </div>
+
+      <div class="footer__bottom">
+        <p class="footer__copy">&copy; <span id="year"></span> Lokality. All rights reserved.</p>
+      </div>
     </div>
   </footer>
 

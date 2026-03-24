@@ -8,17 +8,32 @@
   <meta name="description" content="Lokality is a location-based digital archive and interactive tour guide. Explore destinations through curated tours, historical archives, and multimedia storytelling. Based in St. Croix, USVI.">
   <link rel="canonical" href="https://amalikrigger.github.io/lokality-web/">
 
+  <!-- Favicons -->
   <link rel="icon" href="assets/images/icons/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/images/logos/lokality_launcher.png">
 
+  <!-- Open Graph -->
   <meta property="og:title" content="Lokality — Explore the Culture, History &amp; Stories of the Places That Matter">
   <meta property="og:description" content="A location-based digital archive and interactive tour guide. Curated tours, historical archives, and multimedia storytelling.">
-  <meta property="og:image" content="https://amalikrigger.github.io/lokality-web/assets/images/og-image.jpg">
+  <meta property="og:image" content="https://amalikrigger.github.io/lokality-web/assets/images/logos/lokality_brand.png">
   <meta property="og:url" content="https://amalikrigger.github.io/lokality-web/">
   <meta property="og:type" content="website">
 
-  <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://*.execute-api.*.amazonaws.com;">
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Lokality — Digital Archive &amp; Tours">
+  <meta name="twitter:description" content="Explore destinations through curated tours, historical archives, and multimedia storytelling.">
+  <meta name="twitter:image" content="https://amalikrigger.github.io/lokality-web/assets/images/logos/lokality_brand.png">
 
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://*.execute-api.*.amazonaws.com;">
+
+  <!-- Google Fonts: Inter + Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <script src="assets/js/init.js"></script>
   <link rel="stylesheet" href="assets/css/base.css">
   <link rel="stylesheet" href="assets/css/layout.css">
   <link rel="stylesheet" href="assets/css/components.css">
@@ -26,9 +41,15 @@
 <body>
   <a href="#main-content" class="skip-link">Skip to main content</a>
 
+  <!-- Decorative gradient bar at top -->
+  <div class="gradient-bar" role="presentation"></div>
+
   <header class="site-header" role="banner">
     <div class="container header__inner">
-      <a class="brand" href="./index.html">Lokality</a>
+      <a class="brand" href="./index.html">
+        <img class="brand__icon" src="assets/images/logos/lokality_icon.png" alt="" width="36" height="36">
+        <span class="brand__text">Lokality</span>
+      </a>
       <nav class="nav" aria-label="Primary navigation">
         <button class="nav__toggle js-nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="Open menu">
           <span class="nav__toggle-bar"></span>
@@ -36,8 +57,10 @@
           <span class="nav__toggle-bar"></span>
         </button>
         <div class="nav__menu" id="nav-menu">
+          <a class="nav__link" href="#features">Features</a>
           <a class="nav__link" href="#about">About</a>
           <a class="nav__link" href="#founders">Founders</a>
+          <a class="nav__link" href="#download">Get the App</a>
           <a class="nav__link" href="#signup">Sign Up</a>
         </div>
       </nav>
@@ -48,53 +71,143 @@
 
     <!-- ── Hero ── -->
     <section class="hero">
+      <img class="hero__decoration" src="assets/images/logos/lokality_icon.png" alt="" width="500" height="500" aria-hidden="true">
+      <div class="hero__particles" aria-hidden="true">
+        <span class="particle particle--1"></span>
+        <span class="particle particle--2"></span>
+        <span class="particle particle--3"></span>
+        <span class="particle particle--4"></span>
+        <span class="particle particle--5"></span>
+        <span class="particle particle--6"></span>
+        <span class="particle particle--7"></span>
+        <span class="particle particle--8"></span>
+      </div>
       <div class="container hero__inner">
+        <div class="hero__badge">
+          <span class="hero__badge-dot" aria-hidden="true"></span>
+          Beta now available on iOS
+        </div>
+        <img class="hero__logo" src="assets/images/logos/lokality_icon.png" alt="Lokality feather logo" width="100" height="100">
         <h1 class="hero__title">Explore the Culture, History &amp; Stories of the Places That Matter</h1>
-        <p class="hero__subtitle">Lokality is a location-based digital archive and interactive tour guide — preserving and sharing the cultural heritage of destinations through curated tours, multimedia storytelling, and gamified learning. Starting in St. Croix, USVI.</p>
+        <p class="hero__subtitle">A location-based digital archive and interactive tour guide — preserving and sharing the cultural heritage of destinations through curated tours, multimedia storytelling, and gamified learning.</p>
         <div class="hero__actions">
-          <a class="btn btn--primary" href="#signup">Join the Beta</a>
-          <a class="btn btn--secondary" href="#about">Learn More</a>
+          <a class="btn btn--primary" href="#download">
+            <span class="btn--icon" aria-hidden="true">&#63743;</span>
+            Download on TestFlight
+          </a>
+          <a class="btn btn--secondary" href="#signup">Join the Waitlist</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Features ── -->
+    <section id="features" class="section">
+      <div class="container">
+        <div class="section__header reveal">
+          <h2 class="section__title">Discover Lokality</h2>
+          <p class="section__subtitle">Everything you need to explore, learn, and connect with the places that shape our world.</p>
+        </div>
+        <div class="features-grid stagger">
+          <article class="feature-card reveal">
+            <div class="feature-card__icon" aria-hidden="true">&#127758;</div>
+            <h3 class="feature-card__title">Curated Tours</h3>
+            <p class="feature-card__desc">Walk through history with guided audio and visual tours. Explore neighborhoods and discover stories behind every landmark.</p>
+          </article>
+          <article class="feature-card reveal">
+            <div class="feature-card__icon" aria-hidden="true">&#128218;</div>
+            <h3 class="feature-card__title">Digital Archive</h3>
+            <p class="feature-card__desc">Access a rich collection of photos, oral histories, and cultural records preserved for future generations.</p>
+          </article>
+          <article class="feature-card reveal">
+            <div class="feature-card__icon" aria-hidden="true">&#127942;</div>
+            <h3 class="feature-card__title">Gamified Learning</h3>
+            <p class="feature-card__desc">Earn badges and unlock exclusive content as you explore. Turn every visit into an interactive adventure.</p>
+          </article>
+          <article class="feature-card reveal">
+            <div class="feature-card__icon" aria-hidden="true">&#127916;</div>
+            <h3 class="feature-card__title">Multimedia Storytelling</h3>
+            <p class="feature-card__desc">Rich media experiences that bring places to life through video, audio, images, and interactive narratives.</p>
+          </article>
         </div>
       </div>
     </section>
 
     <!-- ── About ── -->
-    <section id="about" class="section">
+    <section id="about" class="section section--alt">
       <div class="container">
-        <h2 class="section__title">What is Lokality?</h2>
+        <div class="section__header reveal">
+          <h2 class="section__title">What is Lokality?</h2>
+          <p class="section__subtitle">Connecting people to the rich cultural heritage and hidden narratives of the destinations they visit — or call home.</p>
+        </div>
         <div class="about__content">
-          <p>Every place has stories worth preserving. Lokality is a platform that connects people to the rich cultural heritage, history, and hidden narratives of the destinations they visit — or call home.</p>
-          <p>Using your phone as a guide, Lokality combines real-world navigation with curated multimedia tours, historical archives, and educational content. Walk through neighborhoods and discover the stories behind every landmark, street corner, and community space.</p>
-          <p>We started in St. Croix, US Virgin Islands — an island with centuries of history, vibrant culture, and stories that deserve to be told. Lokality is our way of making sure those stories reach the people who need to hear them.</p>
+          <p class="reveal">Every place has stories worth preserving. Lokality is a platform that connects people to the rich cultural heritage, history, and hidden narratives of the destinations they visit — or call home.</p>
+          <blockquote class="about__pullquote reveal">
+            &ldquo;Using your phone as a guide, walk through neighborhoods and discover the stories behind every landmark, street corner, and community space.&rdquo;
+          </blockquote>
+          <p class="reveal">We combine real-world navigation with curated multimedia tours, historical archives, and educational content — creating immersive experiences that celebrate and preserve local culture.</p>
+          <p class="reveal">We started in <strong>St. Croix, US Virgin Islands</strong> — an island with centuries of history, vibrant culture, and stories that deserve to be told. Lokality is our way of making sure those stories reach the people who need to hear them.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Get the App ── -->
+    <section id="download" class="section section--dark">
+      <div class="container download__inner">
+        <div class="download__content">
+          <h2 class="section__title reveal">Get Lokality</h2>
+          <p class="section__subtitle reveal" style="color: var(--color-text-inverse-muted);">Start exploring the culture and history around you. Available now on iOS TestFlight — Android coming soon.</p>
+          <div class="download__actions reveal">
+            <a class="btn btn--primary" href="#testflight" target="_blank" rel="noopener noreferrer">
+              <span class="btn--icon" aria-hidden="true">&#63743;</span>
+              Download on TestFlight
+            </a>
+            <a class="btn btn--secondary" href="#android" target="_blank" rel="noopener noreferrer">
+              Join the Android Waitlist
+            </a>
+          </div>
+        </div>
+        <div class="phone-mockup reveal--scale" aria-hidden="true">
+          <div class="phone-mockup__notch"></div>
+          <div class="phone-mockup__screen">
+            <div class="phone-mockup__placeholder">&#129695;</div>
+          </div>
         </div>
       </div>
     </section>
 
     <!-- ── Founders ── -->
-    <section id="founders" class="section section--alt">
+    <section id="founders" class="section">
       <div class="container">
-        <h2 class="section__title">Meet the Founders</h2>
-        <p class="section__subtitle">The team behind Lokality — building at the intersection of culture, technology, and storytelling.</p>
-        <div class="founders-grid">
-          <article class="founder-card">
+        <div class="section__header reveal">
+          <h2 class="section__title">Meet the Founders</h2>
+          <p class="section__subtitle">Building at the intersection of culture, technology, and storytelling.</p>
+        </div>
+        <div class="founders-grid stagger">
+          <article class="founder-card reveal">
             <div class="founder-card__photo-wrap">
-              <div class="founder-card__placeholder" aria-hidden="true">TD</div>
+              <div class="founder-card__placeholder" aria-hidden="true">
+                <div class="founder-card__placeholder-inner">TD</div>
+              </div>
             </div>
             <h3 class="founder-card__name">Torhera Durand</h3>
             <p class="founder-card__role">Founder</p>
             <p class="founder-card__bio">Passionate about preserving Caribbean heritage and making cultural history accessible through technology.</p>
           </article>
-          <article class="founder-card">
+          <article class="founder-card reveal">
             <div class="founder-card__photo-wrap">
-              <div class="founder-card__placeholder" aria-hidden="true">AK</div>
+              <div class="founder-card__placeholder" aria-hidden="true">
+                <div class="founder-card__placeholder-inner">AK</div>
+              </div>
             </div>
             <h3 class="founder-card__name">Amali Krigger</h3>
             <p class="founder-card__role">Co-Founder</p>
             <p class="founder-card__bio">Software engineer focused on building tools that connect people with the places and stories that shape communities.</p>
           </article>
-          <article class="founder-card">
+          <article class="founder-card reveal">
             <div class="founder-card__photo-wrap">
-              <div class="founder-card__placeholder" aria-hidden="true">ID</div>
+              <div class="founder-card__placeholder" aria-hidden="true">
+                <div class="founder-card__placeholder-inner">ID</div>
+              </div>
             </div>
             <h3 class="founder-card__name">Israel Dennie</h3>
             <p class="founder-card__role">Co-Founder</p>
@@ -105,34 +218,47 @@
     </section>
 
     <!-- ── Sign Up / Newsletter ── -->
-    <section id="signup" class="section">
+    <section id="signup" class="section signup-section">
+      <div class="signup-section__glow" aria-hidden="true"></div>
       <div class="container">
-        <h2 class="section__title">Stay in the Loop</h2>
-        <p class="section__subtitle">Sign up for updates on Lokality's beta launch, new features, and early access.</p>
-
-        <form id="signup-form" class="form" novalidate>
-          <div class="hp" aria-hidden="true">
-            <label for="website">Website</label>
-            <input id="website" name="website" type="text" autocomplete="off" tabindex="-1">
+        <div class="signup-card reveal">
+          <div class="signup-card__decoration" aria-hidden="true">
+            <img src="assets/images/logos/lokality_icon.png" alt="" width="120" height="120" loading="lazy">
+          </div>
+          <div class="section__header">
+            <h2 class="section__title">Stay in the Loop</h2>
+            <p class="section__subtitle">Sign up for updates on Lokality's beta launch, new features, and early access.</p>
           </div>
 
-          <div class="form-group">
-            <label class="label" for="name">Name</label>
-            <input class="input" id="name" name="name" type="text" autocomplete="name"
-                   aria-describedby="name-error">
-            <span id="name-error" class="form-error" role="alert" hidden></span>
-          </div>
+          <form id="signup-form" class="form signup-form" novalidate>
+            <div class="hp" aria-hidden="true">
+              <label for="website">Website</label>
+              <input id="website" name="website" type="text" autocomplete="off" tabindex="-1">
+            </div>
 
-          <div class="form-group">
-            <label class="label" for="email">Email <span class="required" aria-hidden="true">*</span></label>
-            <input class="input" id="email" name="email" type="email" autocomplete="email" required
-                   aria-describedby="email-error">
-            <span id="email-error" class="form-error" role="alert" hidden></span>
-          </div>
+            <div class="signup-form__fields">
+              <div class="form-group">
+                <label class="label" for="name">Name</label>
+                <input class="input" id="name" name="name" type="text" autocomplete="name" placeholder="Your name"
+                       aria-describedby="name-error">
+                <span id="name-error" class="form-error" role="alert" hidden></span>
+              </div>
 
-          <button class="btn btn--primary" type="submit">Sign Up</button>
-          <div id="form-status" class="form-status" role="status" hidden></div>
-        </form>
+              <div class="form-group">
+                <label class="label" for="email">Email <span class="required" aria-hidden="true">*</span></label>
+                <input class="input" id="email" name="email" type="email" autocomplete="email" required placeholder="you@example.com"
+                       aria-describedby="email-error">
+                <span id="email-error" class="form-error" role="alert" hidden></span>
+              </div>
+            </div>
+
+            <div class="signup-form__action">
+              <button class="btn btn--secondary btn--glow" type="submit">Sign Up for Updates</button>
+            </div>
+            <p class="signup-form__note">No spam, ever. Unsubscribe anytime.</p>
+            <div id="form-status" class="form-status" role="status" hidden></div>
+          </form>
+        </div>
       </div>
     </section>
 
@@ -140,18 +266,47 @@
 
   <footer class="site-footer" role="contentinfo">
     <div class="container footer__inner">
-      <div class="footer__brand">
-        <p class="footer__name">Lokality</p>
-        <p class="muted footer__tagline">Preserving the stories of the places that matter.</p>
+      <div class="footer__top">
+        <div class="footer__brand">
+          <a class="footer__brand-link" href="./index.html">
+            <img class="footer__brand-icon" src="assets/images/logos/lokality_icon.png" alt="" width="32" height="32">
+            <span class="footer__brand-name">Lokality</span>
+          </a>
+          <p class="footer__tagline">Preserving the stories of the places that matter.</p>
+          <p class="footer__origin">Made with love in St. Croix, USVI</p>
+        </div>
+
+        <nav aria-label="Footer navigation">
+          <p class="footer__nav-heading">Explore</p>
+          <ul class="footer__nav-list">
+            <li><a class="footer__link" href="#features">Features</a></li>
+            <li><a class="footer__link" href="#about">About</a></li>
+            <li><a class="footer__link" href="#founders">Founders</a></li>
+            <li><a class="footer__link" href="#download">Get the App</a></li>
+          </ul>
+        </nav>
+
+        <nav aria-label="Legal">
+          <p class="footer__nav-heading">Legal</p>
+          <ul class="footer__nav-list">
+            <li><a class="footer__link" href="privacy.html">Privacy Policy</a></li>
+            <li><a class="footer__link" href="terms.html">Terms &amp; Conditions</a></li>
+            <li><a class="footer__link" href="mailto:info@lokality.co">Contact</a></li>
+          </ul>
+        </nav>
       </div>
-      <div class="footer__contact">
-        <a class="footer__link" href="mailto:info@lokality.co">info@lokality.co</a>
+
+      <div class="footer__bottom">
+        <div class="footer__social">
+          <a class="footer__social-link" href="#" target="_blank" rel="noopener noreferrer" aria-label="Lokality on Instagram">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5"/></svg>
+          </a>
+          <a class="footer__social-link" href="#" target="_blank" rel="noopener noreferrer" aria-label="Lokality on Facebook">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+        </div>
+        <p class="footer__copy">&copy; <span id="year"></span> Lokality. All rights reserved.</p>
       </div>
-      <div class="footer__social">
-        <a class="footer__link" href="#" target="_blank" rel="noopener noreferrer" aria-label="Lokality on Instagram">Instagram</a>
-        <a class="footer__link" href="#" target="_blank" rel="noopener noreferrer" aria-label="Lokality on Facebook">Facebook</a>
-      </div>
-      <p class="muted footer__copy">&copy; <span id="year"></span> Lokality. All rights reserved.</p>
     </div>
   </footer>
 

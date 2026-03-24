@@ -5,5 +5,9 @@ window.APP_CONFIG = {
   FEATURES: {
     CONTACT_FORM: true,
     NEWSLETTER: true
+  },
+  LINKS: {
+    TESTFLIGHT: "#testflight",
+    ANDROID: "#android"
   }
 };
