@@ -178,3 +178,47 @@ function initCardTilt() {
 }
 
 initCardTilt();
+
+// ── Phone Screenshot Carousel ──
+function initPhoneCarousel() {
+  const slides = document.querySelectorAll(".phone-carousel__slide");
+  const dotsContainer = document.querySelector(".phone-carousel__dots");
+  if (!slides.length || !dotsContainer) return;
+
+  let current = 0;
+  let timer;
+  const INTERVAL = 3500;
+
+  // Build dots
+  slides.forEach((_, i) => {
+    const dot = document.createElement("button");
+    dot.className = "phone-carousel__dot" + (i === 0 ? " is-active" : "");
+    dot.setAttribute("aria-label", `Screenshot ${i + 1}`);
+    dot.addEventListener("click", () => goTo(i));
+    dotsContainer.appendChild(dot);
+  });
+
+  const dots = dotsContainer.querySelectorAll(".phone-carousel__dot");
+
+  function goTo(index) {
+    slides[current].classList.remove("is-active");
+    dots[current].classList.remove("is-active");
+    current = index;
+    slides[current].classList.add("is-active");
+    dots[current].classList.add("is-active");
+    resetTimer();
+  }
+
+  function advance() {
+    goTo((current + 1) % slides.length);
+  }
+
+  function resetTimer() {
+    clearInterval(timer);
+    timer = setInterval(advance, INTERVAL);
+  }
+
+  resetTimer();
+}
+
+initPhoneCarousel();
