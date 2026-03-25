@@ -535,30 +535,76 @@
 
 /* ── Founder Cards ── */
 .founder-card {
+  position: relative;
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
-  padding: var(--spacing-xl) var(--spacing-lg);
+  padding: var(--spacing-2xl) var(--spacing-xl);
   text-align: center;
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
   transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base);
   will-change: transform;
 }
 
+.founder-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--gradient-feather);
+  transition: height var(--transition-base);
+}
+
 .founder-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg), 0 0 0 1px rgba(40, 53, 147, 0.06);
-  border-color: rgba(40, 53, 147, 0.12);
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-xl), 0 0 0 1px rgba(40, 53, 147, 0.08);
+  border-color: rgba(40, 53, 147, 0.15);
+}
+
+.founder-card:hover::before {
+  height: 4px;
 }
 
 .founder-card__photo-wrap {
   display: flex;
   justify-content: center;
-  margin-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+}
+
+.founder-card__photo-ring {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 166px;
+  height: 166px;
+  border-radius: var(--radius-full);
+  background: var(--gradient-feather);
+  padding: 3px;
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.founder-card:hover .founder-card__photo-ring {
+  transform: scale(1.04);
+  box-shadow: 0 0 20px rgba(40, 53, 147, 0.15), 0 0 40px rgba(255, 160, 47, 0.1);
+}
+
+.founder-card__photo {
+  width: 160px;
+  height: 160px;
+  border-radius: var(--radius-full);
+  object-fit: cover;
+  object-position: top;
+  aspect-ratio: 1;
+  border: 3px solid var(--color-surface);
+  display: block;
 }
 
 .founder-card__placeholder {
-  width: 88px;
-  height: 88px;
+  width: 160px;
+  height: 160px;
   border-radius: var(--radius-full);
   background: var(--gradient-feather);
   display: flex;
@@ -580,22 +626,28 @@
   justify-content: center;
   color: var(--color-primary);
   font-weight: var(--font-weight-bold);
-  font-size: var(--font-size-xl);
+  font-size: var(--font-size-2xl);
   font-family: var(--font-family-heading);
 }
 
 .founder-card__name {
-  margin: 0 0 var(--spacing-xs) 0;
-  font-size: var(--font-size-md);
+  margin: 0 0 var(--spacing-sm) 0;
+  font-size: var(--font-size-lg);
   font-family: var(--font-family-heading);
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-bold);
 }
 
 .founder-card__role {
-  margin: 0 0 var(--spacing-sm) 0;
+  display: inline-block;
+  margin: 0 0 var(--spacing-md) 0;
+  background: rgba(255, 160, 47, 0.12);
   color: var(--color-secondary-dark);
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-medium);
+  padding: 2px 14px;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .founder-card__bio {
