@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: Serverless backend (HTTP API + Lambda + DynamoDB + S3)
+Description: Starter backend (HTTP API + Lambda + DynamoDB + S3)
 
 Parameters:
   ClientName:
@@ -14,7 +14,7 @@ Parameters:
     Description: Allowed CORS origin (GitHub Pages or custom domain)
   AdminTokenParam:
     Type: String
-    Description: SSM SecureString path for admin token (e.g., /{client}/{stage}/admin-token)
+    Description: SSM SecureString path for admin token (e.g., /client/stage/admin-token)
   ThrottleRateLimit:
     Type: Number
     Default: 10
@@ -32,6 +32,11 @@ Parameters:
     Type: String
     Default: "false"
     AllowedValues: ["true", "false"]
+  EnableCloudFront:
+    Type: String
+    Default: "false"
+    AllowedValues: ["true", "false"]
+    Description: Enable S3+CloudFront hosting for the frontend
   EnableSES:
     Type: String
     Default: "false"
@@ -50,6 +55,7 @@ Conditions:
   IsDeletionProtection: !Equals [!Ref EnableDeletionProtection, "true"]
   IsPITR: !Equals [!Ref EnablePITR, "true"]
   IsSES: !Equals [!Ref EnableSES, "true"]
+  IsCloudFront: !Equals [!Ref EnableCloudFront, "true"]
 
 Globals:
   Function:
@@ -230,6 +236,94 @@ Resources:
             Method: OPTIONS
             Path: /{proxy+}
 
+  # ---------------------------------------------------------------------------
+  # Frontend Hosting (S3 + CloudFront) — conditional on EnableCloudFront
+  # ---------------------------------------------------------------------------
+
+  FrontendBucket:
+    Type: AWS::S3::Bucket
+    Condition: IsCloudFront
+    Properties:
+      BucketName: !Sub ${ClientName}-${StageName}-frontend-${AWS::AccountId}
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+
+  FrontendBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Condition: IsCloudFront
+    Properties:
+      Bucket: !Ref FrontendBucket
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: AllowCloudFrontOAC
+            Effect: Allow
+            Principal:
+              Service: cloudfront.amazonaws.com
+            Action: s3:GetObject
+            Resource: !Sub "${FrontendBucket.Arn}/*"
+            Condition:
+              StringEquals:
+                AWS:SourceArn: !Sub "arn:aws:cloudfront::${AWS::AccountId}:distribution/${FrontendDistribution}"
+          - Sid: DenyInsecureTransport
+            Effect: Deny
+            Principal: "*"
+            Action: "s3:*"
+            Resource:
+              - !GetAtt FrontendBucket.Arn
+              - !Sub "${FrontendBucket.Arn}/*"
+            Condition:
+              Bool:
+                aws:SecureTransport: "false"
+
+  FrontendOriginAccessControl:
+    Type: AWS::CloudFront::OriginAccessControl
+    Condition: IsCloudFront
+    Properties:
+      OriginAccessControlConfig:
+        Name: !Sub ${ClientName}-${StageName}-frontend-oac
+        OriginAccessControlOriginType: s3
+        SigningBehavior: always
+        SigningProtocol: sigv4
+
+  FrontendDistribution:
+    Type: AWS::CloudFront::Distribution
+    Condition: IsCloudFront
+    Properties:
+      DistributionConfig:
+        Enabled: true
+        DefaultRootObject: index.html
+        PriceClass: PriceClass_100
+        HttpVersion: http2and3
+        Origins:
+          - Id: S3Origin
+            DomainName: !GetAtt FrontendBucket.RegionalDomainName
+            OriginAccessControlId: !Ref FrontendOriginAccessControl
+            S3OriginConfig:
+              OriginAccessIdentity: ""
+        DefaultCacheBehavior:
+          TargetOriginId: S3Origin
+          ViewerProtocolPolicy: redirect-to-https
+          CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6
+          Compress: true
+        CustomErrorResponses:
+          - ErrorCode: 403
+            ResponseCode: 404
+            ResponsePagePath: /404.html
+            ErrorCachingMinTTL: 60
+          - ErrorCode: 404
+            ResponseCode: 404
+            ResponsePagePath: /404.html
+            ErrorCachingMinTTL: 60
+        Comment: !Sub "${ClientName} ${StageName} frontend"
+
 Outputs:
   ApiBaseUrl:
     Description: Base URL of the HTTP API (includes stage path)
@@ -240,3 +334,15 @@ Outputs:
     Value: !Ref ContentTable
   MediaBucketName:
     Value: !Ref MediaBucket
+  FrontendBucketName:
+    Condition: IsCloudFront
+    Value: !Ref FrontendBucket
+    Description: S3 bucket for frontend files
+  CloudFrontDistributionId:
+    Condition: IsCloudFront
+    Value: !Ref FrontendDistribution
+    Description: CloudFront distribution ID (for cache invalidation)
+  CloudFrontDomainName:
+    Condition: IsCloudFront
+    Value: !GetAtt FrontendDistribution.DomainName
+    Description: CloudFront domain name (e.g., d1234abcdef.cloudfront.net)

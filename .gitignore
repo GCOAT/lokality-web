@@ -37,6 +37,7 @@ kore.config.example.json
 design-refs/
 docs/
 scripts/
+kore-recipes/
 
 # Project-internal files
 lokality-initial-prompt.md
