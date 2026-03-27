@@ -15,6 +15,8 @@ const navToggle = document.querySelector(".js-nav-toggle");
 const navMenu = document.querySelector("#nav-menu");
 const header = document.querySelector(".site-header");
 const navLinks = document.querySelectorAll(".nav__link");
+const backToTopBtn = document.querySelector(".js-back-to-top");
+const footerNewsletter = document.querySelector(".footer__newsletter");
 
 // ── Init ──
 if (yearEl) {
@@ -24,6 +26,10 @@ if (yearEl) {
 // ── Event Listeners ──
 form?.addEventListener("submit", handleFormSubmit);
 navToggle?.addEventListener("click", handleNavToggle);
+backToTopBtn?.addEventListener("click", () => {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
+footerNewsletter?.addEventListener("submit", handleFooterNewsletter);
 
 // Close mobile nav when clicking a link
 navMenu?.querySelectorAll(".nav__link").forEach((link) => {
@@ -37,6 +43,9 @@ navMenu?.querySelectorAll(".nav__link").forEach((link) => {
 function updateHeaderScroll() {
   if (header) {
     header.classList.toggle("is-scrolled", window.scrollY > 10);
+  }
+  if (backToTopBtn) {
+    backToTopBtn.classList.toggle("is-visible", window.scrollY > 400);
   }
 }
 
@@ -83,7 +92,7 @@ function initActiveNavTracking() {
         }
       });
     },
-    { threshold: 0.3, rootMargin: "-80px 0px -40% 0px" }
+    { threshold: 0.15, rootMargin: "-80px 0px -20% 0px" }
   );
 
   sections.forEach((section) => observer.observe(section));
@@ -154,6 +163,29 @@ function showStatus(type, message) {
   }
 }
 
+// ── Footer Newsletter Handler ──
+async function handleFooterNewsletter(e) {
+  e.preventDefault();
+  const input = footerNewsletter.querySelector("input[type='email']");
+  const email = input?.value?.trim();
+  if (!email || !email.includes("@")) return;
+
+  const btn = footerNewsletter.querySelector("button");
+  btn.disabled = true;
+
+  try {
+    await submitLead({ email, source: "lokality-footer" });
+    input.value = "";
+    input.placeholder = "You\u2019re in!";
+    setTimeout(() => { input.placeholder = "your@email.com"; }, 3000);
+  } catch {
+    input.placeholder = "Try again";
+    setTimeout(() => { input.placeholder = "your@email.com"; }, 3000);
+  } finally {
+    btn.disabled = false;
+  }
+}
+
 // ── Micro-interactions: 3D Card Tilt ──
 function initCardTilt() {
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -189,23 +221,42 @@ function initPhoneCarousel() {
   let timer;
   const INTERVAL = 3500;
 
-  // Build dots
+  // Build segmented progress bar (Instagram-stories style)
+  dotsContainer.className = "phone-carousel__progress";
+  dotsContainer.innerHTML = "";
+  const segments = [];
+
   slides.forEach((_, i) => {
-    const dot = document.createElement("button");
-    dot.className = "phone-carousel__dot" + (i === 0 ? " is-active" : "");
-    dot.setAttribute("aria-label", `Screenshot ${i + 1}`);
-    dot.addEventListener("click", () => goTo(i));
-    dotsContainer.appendChild(dot);
+    const segment = document.createElement("div");
+    segment.className = "phone-carousel__segment";
+    const fill = document.createElement("div");
+    fill.className = "phone-carousel__segment-fill";
+    segment.appendChild(fill);
+    segment.addEventListener("click", () => goTo(i));
+    dotsContainer.appendChild(segment);
+    segments.push(fill);
   });
 
-  const dots = dotsContainer.querySelectorAll(".phone-carousel__dot");
+  function updateProgress() {
+    segments.forEach((fill, i) => {
+      fill.style.transition = "none";
+      if (i < current) {
+        fill.style.width = "100%";
+      } else if (i === current) {
+        fill.style.width = "0%";
+        fill.offsetWidth; // force reflow
+        fill.style.transition = `width ${INTERVAL}ms linear`;
+        fill.style.width = "100%";
+      } else {
+        fill.style.width = "0%";
+      }
+    });
+  }
 
   function goTo(index) {
     slides[current].classList.remove("is-active");
-    dots[current].classList.remove("is-active");
     current = index;
     slides[current].classList.add("is-active");
-    dots[current].classList.add("is-active");
     resetTimer();
   }
 
@@ -215,6 +266,7 @@ function initPhoneCarousel() {
 
   function resetTimer() {
     clearInterval(timer);
+    updateProgress();
     timer = setInterval(advance, INTERVAL);
   }
 

@@ -238,7 +238,7 @@ code {
 /* Gated behind .js class added by init.js — content stays visible if JS fails */
 .js .reveal {
   opacity: 0;
-  transform: translateY(30px);
+  transform: translateY(30px) scale(0.97);
   transition: opacity var(--transition-reveal), transform var(--transition-reveal);
 }
 
