@@ -42,7 +42,7 @@
   background: var(--gradient-hero);
   position: relative;
   overflow: hidden;
-  padding: clamp(var(--spacing-3xl), 12vw, var(--spacing-5xl)) 0 clamp(var(--spacing-3xl), 14vw, 160px);
+  padding: clamp(var(--spacing-3xl), 12vw, var(--spacing-5xl)) 0 clamp(140px, 14vw, 180px);
 }
 
 /* Ambient glow orbs */
